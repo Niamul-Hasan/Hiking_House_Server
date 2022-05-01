@@ -13,12 +13,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// O9BhHaoiAj0qHhkT
-console.log(process.env.DB_USER)
-console.log(process.env.DB_PASSWORD)
-// console.log(process.env)
-
-
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.vqrww.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -33,7 +27,13 @@ async function run(){
                     const cursor=hikingCollection.find(query);
                     const hikingGears= await cursor.toArray();
                     console.log('gears are colllecting')
-                    res.send('gears are colllecting');
+                    res.send(hikingGears);
+                });
+
+                app.post('/gears',async(req,res)=>{
+                    const newInventory=req.body;
+                    const result=await hikingCollection.insertOne(newInventory);
+                    res.send(result);
                 })
     }
     finally{
@@ -42,33 +42,6 @@ async function run(){
 }
 
 run().catch(console.dir);
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   console.log('new user')
-//   // perform actions on the collection object
-//   client.close();
-// });
-
-
-
-
-// client.connect(err => {
-//     const hikingCollection = client.db("hikingGears").collection("Gears");
-  
-//     app.get("/gears",async(req,res)=>{
-//         const query={};
-//         const cursor=hikingCollection.find(query);
-//         const hikingGears= await cursor.toArray();
-//       //   console.log('gears are colllecting')
-//         res.send('gears are colllecting');
-//     })
-//     console.log('MONGO IS CONNECTED')
-//     // perform actions on the collection object
-//   //   client.close();
-//   });
-  
-
-
 
 
 app.get("/",(req,res)=>{
