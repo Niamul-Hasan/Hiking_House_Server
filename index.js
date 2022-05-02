@@ -20,15 +20,21 @@ async function run(){
     try{
         await client.connect();
         const hikingCollection = client.db("hikingGears").collection("Gears");
-        console.log('try is try to connect')
+        console.log('try is connected')
 
         app.get("/gears",async(req,res)=>{
                     const query={};
                     const cursor=hikingCollection.find(query);
-                    const hikingGears= await cursor.toArray();
+                    const hikingGears= await cursor.limit(6).toArray();
                     console.log('gears are colllecting')
                     res.send(hikingGears);
                 });
+                app.get('/inventories',async(req,res)=>{
+                    const query={};
+                    const cursor=hikingCollection.find(query);
+                    const hikingGears= await cursor.toArray();
+                    res.send(hikingGears);
+                })
 
                 app.post('/gears',async(req,res)=>{
                     const newInventory=req.body;
