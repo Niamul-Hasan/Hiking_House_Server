@@ -45,6 +45,23 @@ async function run(){
                     res.send(result);
 
                 })
+                 // Api for updating quantity
+                 app.put('/inventories/:id',async(req,res)=>{
+                     const id=req.params.id;
+                     const updatedData=req.body;
+                     const filter={_id:ObjectId(id)};
+                     const options = { upsert: true };
+                     const updatedDoc = {
+                        $set: {
+                            quantity:updatedData.quantity,
+                            suplier:updatedData.suplier
+                        }
+                    };
+                    const result = await hikingCollection.updateOne(filter, updatedDoc, options);
+                    res.send(result);
+        
+
+                 })
 
                 // Api for insert an inventory
                 app.post('/gears',async(req,res)=>{
@@ -52,6 +69,7 @@ async function run(){
                     const result=await hikingCollection.insertOne(newInventory);
                     res.send(result);
                 })
+               
     }
     finally{
 
