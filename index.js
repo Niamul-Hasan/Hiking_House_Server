@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 4000;
 require('dotenv').config();
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 const app = express();
@@ -21,7 +21,7 @@ async function run(){
         await client.connect();
         const hikingCollection = client.db("hikingGears").collection("Gears");
         console.log('try is connected')
-
+        // Api for homepage Inventory load
         app.get("/gears",async(req,res)=>{
                     const query={};
                     const cursor=hikingCollection.find(query);
@@ -29,6 +29,7 @@ async function run(){
                     console.log('gears are colllecting')
                     res.send(hikingGears);
                 });
+                // Api for loading all inventories to Inventory manage component
                 app.get('/inventories',async(req,res)=>{
                     const query={};
                     const cursor=hikingCollection.find(query);
@@ -36,6 +37,16 @@ async function run(){
                     res.send(hikingGears);
                 })
 
+                // Api for loading selected inventory details
+                app.get('/inventories/:id', async(req,res)=>{
+                    const id=req.params.id;
+                    const query={_id:ObjectId(id)};
+                    const result=await hikingCollection.findOne(query);
+                    res.send(result);
+
+                })
+
+                // Api for insert an inventory
                 app.post('/gears',async(req,res)=>{
                     const newInventory=req.body;
                     const result=await hikingCollection.insertOne(newInventory);
