@@ -31,6 +31,7 @@ async function run(){
                 });
                 // Api for loading all inventories to Inventory manage component
                 app.get('/inventories',async(req,res)=>{
+                    console.log('All inventories are getting')
                     const query={};
                     const cursor=hikingCollection.find(query);
                     const hikingGears= await cursor.toArray();
@@ -43,6 +44,14 @@ async function run(){
                     const query={_id:ObjectId(id)};
                     const result=await hikingCollection.findOne(query);
                     res.send(result);
+
+                })
+                // Api for Deleting selected inventory
+                app.delete('/inventories/:id', async(req,res)=>{
+                    const id=req.params.id;
+                    const query={_id:ObjectId(id)};
+                    const deletedInventory=await hikingCollection.deleteOne(query);
+                    res.send(deletedInventory);
 
                 })
                  // Api for updating quantity
