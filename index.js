@@ -63,12 +63,19 @@ async function run(){
                     const booking=await myCollection.insertOne(MyInventory);
                     res.send(booking);
                 })
-                // Api for Deleting selected inventory
+                // Api for Deleting selected inventory from Manage
                 app.delete('/inventories/:id', async(req,res)=>{
                     const id=req.params.id;
                     const query={_id:ObjectId(id)};
                     const deletedInventory=await hikingCollection.deleteOne(query);
                     res.send(deletedInventory);
+                })
+                // Api for Deleting selected inventory from Bookings
+                app.delete('/bookings/:id', async(req,res)=>{
+                    const id=req.params.id;
+                    const query={_id:ObjectId(id)};
+                    const deletedBooking=await myCollection.deleteOne(query);
+                    res.send(deletedBooking);
 
                 })
                  // Api for updating quantity
