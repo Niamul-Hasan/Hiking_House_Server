@@ -21,6 +21,7 @@ async function run(){
         await client.connect();
         const hikingCollection = client.db("hikingGears").collection("Gears");
         const myCollection=client.db("hikingGears").collection("MyGears");
+        const comboCollection=client.db("hikingGears").collection("Combo");
         console.log('try is connected')
         // Api for homepage Inventory load
         app.get("/gears",async(req,res)=>{
@@ -92,8 +93,6 @@ async function run(){
                     };
                     const result = await hikingCollection.updateOne(filter, updatedDoc, options);
                     res.send(result);
-        
-
                  })
 
                 // Api for insert an inventory for mongodb 
@@ -101,6 +100,13 @@ async function run(){
                     const newInventory=req.body;
                     const result=await hikingCollection.insertOne(newInventory);
                     res.send(result);
+                })
+
+                //Api for loadind combo data
+                app.get("/combo",async(req,res)=>{
+                    const query={};
+                    const comboData= await comboCollection.find(query).toArray();
+                    res.send(comboData);
                 })
                
     }
