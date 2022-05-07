@@ -20,6 +20,7 @@ async function run(){
     try{
         await client.connect();
         const hikingCollection = client.db("hikingGears").collection("Gears");
+        const myCollection=client.db("hikingGears").collection("MyGears");
         console.log('try is connected')
         // Api for homepage Inventory load
         app.get("/gears",async(req,res)=>{
@@ -72,7 +73,7 @@ async function run(){
 
                  })
 
-                // Api for insert an inventory
+                // Api for insert an inventory for mongodb 
                 app.post('/gears',async(req,res)=>{
                     const newInventory=req.body;
                     const result=await hikingCollection.insertOne(newInventory);
