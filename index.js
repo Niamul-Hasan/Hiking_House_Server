@@ -47,6 +47,22 @@ async function run(){
                     res.send(result);
 
                 })
+                // Api for loading all inventories to Bookings Component 
+                app.get('/bookings', async(req,res)=>{
+                   const email=req.query.email;
+                   console.log(email)
+                   const query={email:email};
+                   const cursor=myCollection.find(query);
+                   const bookings=await cursor.toArray();
+                   res.send(bookings);
+                })
+
+                //Api for inserting booking inventory
+                app.post("/bookings", async(req,res)=>{
+                    const MyInventory=req.body;
+                    const booking=await myCollection.insertOne(MyInventory);
+                    res.send(booking);
+                })
                 // Api for Deleting selected inventory
                 app.delete('/inventories/:id', async(req,res)=>{
                     const id=req.params.id;
