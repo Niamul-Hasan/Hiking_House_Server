@@ -23,6 +23,15 @@ async function run(){
         const myCollection=client.db("hikingGears").collection("MyGears");
         const comboCollection=client.db("hikingGears").collection("Combo");
         console.log('try is connected')
+
+        //Auth
+        app.post("/token",async(req,res)=>{
+            const user=req.body;
+            const accessToken=jwt.sign(user,process.env.ACCESS_SECRET,{
+                expiresIn:'2d'
+            });
+            res.send({accessToken})
+        })
         // Api for homepage Inventory load
         app.get("/gears",async(req,res)=>{
                     const query={};
