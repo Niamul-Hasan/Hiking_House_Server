@@ -18,7 +18,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@clu
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run(){
     try{
-        await client.connect();
+         client.connect();
         const hikingCollection = client.db("hikingGears").collection("Gears");
         const myCollection=client.db("hikingGears").collection("MyGears");
         const comboCollection=client.db("hikingGears").collection("Combo");
